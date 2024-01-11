@@ -1,0 +1,59 @@
+1)기존 모델
+model = Sequential()
+model.add(Conv2D(32, 3, activation = 'relu', input_shape=(32,32,3)))
+model.add(MaxPooling2D(2,2))
+model.add(Conv2D(64, 3, activation = 'relu'))
+model.add(MaxPooling2D(2,2))
+model.add(Conv2D(64, 3, activation = 'relu'))
+model.add(Flatten())
+model.add(Dense(64, activation='relu'))
+model.add(Dense(10, activation='softmax'))
+
+accuracy:0.7668 val_accuracy:0.6927
+
+2)모델 수정 후(MaxPooling레이어 하나 추가, 히든 레이어 뉴련의 수를 늘려서 2개 추가)
+model = Sequential()
+model.add(Conv2D(32, 3, activation = 'relu', input_shape=(32,32,3)))
+model.add(MaxPooling2D(2,2))
+model.add(Conv2D(64, 3, activation = 'relu'))
+model.add(MaxPooling2D(2,2))
+model.add(Conv2D(64, 3, activation = 'relu'))
+model.add(MaxPooling2D(2,2))
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(16, activation='softmax'))
+
+accuracy:0.8101 val_accuracy:0.7087
+
+3)마지막 모델 수정(Conv2D,Maxpooling레이어 추가, 과적합 방지 Dropout레이어 추가)
+model = Sequential()
+model.add(Conv2D(32, (3,3), activation = 'relu',padding='same', input_shape=(32,32,3)))
+model.add(Conv2D(32, (3,3), activation = 'relu',padding='same', input_shape=(32,32,3)))
+model.add(MaxPooling2D(2,2))
+model.add(Dropout(0.25))
+model.add(Conv2D(64, (3,3), activation = 'relu',padding='same' ))
+model.add(Conv2D(64, (3,3), activation = 'relu',padding='same' ))
+model.add(MaxPooling2D(2,2))
+model.add(Dropout(0.25))
+model.add(Conv2D(128, 3, activation = 'relu',padding='same'))
+model.add(MaxPooling2D(2,2))
+model.add(Dropout(0.25))
+model.add(Conv2D(128, 3, activation = 'relu',padding='same'))
+model.add(MaxPooling2D(2,2))
+model.add(Dropout(0.25))
+model.add(Conv2D(256, 3, activation = 'relu',padding='same'))
+model.add(MaxPooling2D(2,2))
+model.add(Dropout(0.25))
+
+model.add(Flatten())
+
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='softmax'))
+
+model.summary()
+
+accuracy:0.8603 val_accuracy:0.8613
+
